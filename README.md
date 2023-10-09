@@ -1,3 +1,9 @@
+---> ---> ---> ---> ---> ---> ---> ---> ---> ---> ---> ---> ---> ---> --->
+|collect jobs| get/process custom cover letter | place into latex document |
+|------------|--------------------------------|--------------------------|
+| scrape.py           |   modify_cl.py                             |           create_doc.py               |
+| collate.py           |             process_cl.py                   |                          |
+
 # Usage
 1. Place job descriptions into `postins/posting_id`
 2. Run `python3 modify_cl.py <posting_id>`
