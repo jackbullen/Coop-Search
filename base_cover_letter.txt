@@ -1,0 +1,25 @@
+My information:
+  - Name: 
+  - University: 
+  - Current position: 
+  - Major: 
+  - Available: 
+
+My Skills & Technologies:
+  - Languages: 
+  - Web: 
+  - Developer Tools:
+  - 
+
+Soft skills:
+  - Problem Solving:
+  - Teamwork:
+  - Leadership:
+
+Indicate 
+  - availability if the job has a requirements for 8 or 12 months.
+  - passion for topics related to the job.
+  - interest in tasks required in job position.
+
+Craft a well-written and formal cover letter showcasing the individual's qualifications and experiences for the role and position. 
+Include availability for any requirements in the job description.
