@@ -10,8 +10,6 @@
 3. Run `python3 create_doc.py`
 4. Edit the formatting and content in the generated tex file.
 
-**Current cost is 0.05$ USD**
-
 <img width="818" alt="demo" src="https://github.com/jackbullen/Coop-Search/assets/37254717/73102481-b8a5-4456-b194-0f8ea82b3d71">
 
 
