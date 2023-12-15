@@ -16,6 +16,7 @@ for _,_,files in os.walk('./modified_cover_letters'):
                 if i == 0:
                     paragraph = 'Dear ' + paragraph
                 OUTTEX += r'\noindent' + '\n ' + paragraph + '\n' + r'\vspace{1em}'
-
-        with open('./docs/cover_letter_' + file.split('.')[0] + '.tex', 'w') as f:
+        num = file.split('.')[0][-3:]
+        os.makedirs(f'./docs/CL_{num}', exist_ok=True)
+        with open(f'./docs/CL_{num}/cover_letter_' + file.split('.')[0] + '.tex', 'w') as f:
             f.write(OUTTEX+r'\end{document}')

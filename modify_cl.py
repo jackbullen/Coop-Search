@@ -1,10 +1,11 @@
 import os
 import sys
-import openai
-from dotenv import load_dotenv
+from openai import OpenAI
 
+from dotenv import load_dotenv
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_posting(file):
     co0p_job = dict()
@@ -52,25 +53,19 @@ def generate_customized_cover_letter(job_description, max_tokens=1600, model="gp
     appr_input_token_count = len(prompt.split(' '))
 
     # Price confirmation
-    if model == "gpt-3.5-turbo":
-        input_per_1k_tokens = 0.003
-        output_per_1k_tokens = 0.004
+    if model == "gpt-4-1106-preview":
+        input_per_1k_tokens = 0.001
+        output_per_1k_tokens = 0.003
     elif model == "gpt-4":
         input_per_1k_tokens = 0.06
         output_per_1k_tokens = 0.12
 
     guess_output_token_count = int(appr_input_token_count * 1.5)
 
-    # Include this once token and price approximation is accurate
+    total_input_cost = input_per_1k_tokens * (appr_input_token_count / 1000)
+    total_output_cost = output_per_1k_tokens * (guess_output_token_count / 1000)
+    max_cost = total_input_cost + total_output_cost
 
-    # if max_tokens < appr_input_token_count + guess_output_token_count:
-    #     print(f"\nMax tokens ({max_tokens}) is less than the approximated token count ({appr_input_token_count + guess_output_token_count}).")
-    #     print("Increase the max tokens to get the best results.\n")
-    #     return None
-
-    total_input_cost = appr_input_token_count * input_per_1k_tokens/1000
-    total_output_cost = (max_tokens - appr_input_token_count) * output_per_1k_tokens/1000
-    max_cost = max_tokens * output_per_1k_tokens/1000
     print('\nUsing model: ' + model)
     print('NOT ACCURATE PRICING: The max cost for the request is ' + str(max_cost) + '$.')
     user_response = input(f"NOT ACCURATE PRICING: The expected cost for the request is ${total_output_cost+total_input_cost:.2f}. \n\nDo you wish to continue? (yes/no): ")
@@ -78,15 +73,13 @@ def generate_customized_cover_letter(job_description, max_tokens=1600, model="gp
     # user_response = 'yes'
     
     if user_response.lower() == 'yes' or user_response.lower() == 'y':
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                        {"role": "system", "content": 'Please create a custom cover letter for a job posting. I will provide some information about myself and the cover letter specification, then the job posting.'}, 
-                        {"role": "user", "content": prompt}
-                      ],
-            max_tokens=max_tokens
-            # temperature=0.9,
-        )
+        # Your code to make the API request
+        response = client.chat.completions.create(model=model,
+        messages=[
+                    {"role": "system", "content": 'Please create a custom cover letter for a job posting. I will provide some information about myself and the cover letter specification, then the job posting.'}, 
+                    {"role": "user", "content": prompt}
+                  ],
+        max_tokens=max_tokens)
         return response.choices[0].message.content.strip()
     else:
         print(base_cover_letter)
@@ -102,7 +95,7 @@ def process_posting(filename):
         coop_job = get_posting(job_description_path)
         job_description = coop_job['org'] + ' '.join(coop_job['info']) + coop_job['description']
         print(f"Job description for {filename}:\n{job_description}\n{'-'*50}")
-        customized_cl = generate_customized_cover_letter(job_description)
+        customized_cl = generate_customized_cover_letter(job_description, model='gpt-4-1106-preview')
         
         if customized_cl is None:
             return
@@ -122,7 +115,6 @@ def main():
     job_ids = sys.argv[1:]
     for job_id in job_ids:
         process_posting(job_id)
-        print("price for job was: " + str(openai.api_usage()['total']['price']) + '$'
 
 if __name__ == "__main__":
     main()

@@ -4,6 +4,13 @@
 | scrape.py           |   modify_cl.py                             |           create_doc.py               |
 | collate.py           |             process_cl.py                   |                          |
 
+# Todo
+- Fix vspace doubles in create_doc.py
+- Use resume alongside base_cover_letter.txt  and job description to generate cover letter
+- Include resume in latex doc
+- Scrape more job boards
+- Add more customization options
+
 # Usage
 1. Place job descriptions into `postins/posting_id`
 2. Run `python3 modify_cl.py <posting_id>`
